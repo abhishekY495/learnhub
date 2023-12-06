@@ -3,11 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { StudentContext } from "../contexts/StudentContext";
 import { register } from "../functions/authentication/register";
+import showPasswordIcon from "../assets/password/showPasswordIcon.svg";
+import hidePasswordIcon from "../assets/password/hidePasswordIcon.svg";
 
 export const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { dispatch } = useContext(StudentContext);
   const navigate = useNavigate();
 
@@ -37,14 +40,20 @@ export const Register = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </label>
-      <label>
+      <label className="relative">
         <p>
           Password <sup className="text-red-500">*</sup>
         </p>
         <input
-          type="password"
-          className="border-neutral-300 pl-1 w-full rounded-md border-2"
+          type={showPassword ? "text" : "password"}
+          className="border-neutral-300 pl-1 w-full rounded-md border-2 pr-8"
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <img
+          src={showPassword ? hidePasswordIcon : showPasswordIcon}
+          onClick={() => setShowPassword(!showPassword)}
+          className="w-[18px] absolute top-[29px] right-[10px] opacity-50 hover:cursor-pointer"
+          alt="password icon"
         />
       </label>
       <button
