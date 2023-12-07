@@ -23,7 +23,7 @@ export const CourseDetails = ({ course }) => {
       <div className="border p-2 rounded pl-3 capitalize">
         <Instructors instructors={course?.instructors} />
         <p>
-          <span className="font-bold">Duration</span> - {course?.duration}
+          <span className="font-bold">Duration</span>: {course?.duration}
         </p>
         <p>
           <span className="font-bold">Enrolled Students</span>:{" "}

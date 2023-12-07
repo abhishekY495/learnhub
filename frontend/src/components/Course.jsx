@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Course = ({ course, courseId }) => {
+export const Course = ({ course }) => {
   return (
     <Link
-      to={`/courses/${courseId || course._id}`}
+      to={`/courses/${course._id}`}
       className="bg-neutral-200 flex flex-col p-2 gap-2 rounded-lg w-[320px] max-[820px]:w-[420px] max-[485px]:w-auto max-[485px]:mx-5 hover:bg-neutral-300 transition-all"
     >
       <img
