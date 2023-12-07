@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const courses = require("./data/courses");
 const connectDB = require("./config/db");
 const studentRoutes = require("./routes/studentRoutes");
+const courseRoutes = require("./routes/courseRoutes");
 
 dotenv.config();
 
@@ -17,10 +18,7 @@ app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-app.get("/api/courses", (req, res) => {
-  res.json(courses);
-});
-
 app.use("/api/student", studentRoutes);
+app.use("/api/courses", courseRoutes);
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

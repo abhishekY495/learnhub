@@ -1,17 +1,40 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
+import { ProtectedRoute } from "./utils/ProtectedRoute";
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { ProtectedRoute } from "./utils/ProtectedRoute";
+import { CourseDetailsPage } from "./pages/CourseDetailsPage";
+import { CourseContext } from "./contexts/CourseContext";
+import { StudentContext } from "./contexts/StudentContext";
 
 export const App = () => {
+  const { dispatch } = useContext(CourseContext);
+  const {
+    state: { studentData },
+  } = useContext(StudentContext);
+
+  const getCourses = async () => {
+    dispatch({ type: "COURSE_DATA_LOADING" });
+    try {
+      const response = await fetch("/api/courses");
+      const data = await response.json();
+      dispatch({ type: "COURSE_DATA", payload: data });
+    } catch (error) {
+      dispatch({ type: "COURSE_DATA_ERROR" });
+    }
+  };
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
   return (
-    <div>
+    <div className="mb-36">
       <Toaster position="top-center" />
       <Navbar />
       <Routes>
@@ -25,8 +48,17 @@ export const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={!studentData ? <LoginPage /> : <Navigate to="/dashboard" />}
+        />
+        <Route
+          path="/register"
+          element={
+            !studentData ? <RegisterPage /> : <Navigate to="/dashboard" />
+          }
+        />
+        <Route path="/courses/:id" element={<CourseDetailsPage />} />
       </Routes>
     </div>
   );

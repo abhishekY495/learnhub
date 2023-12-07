@@ -73,6 +73,7 @@ const loginStudent = asyncHandler(async (req, res) => {
       _id: student._id,
       name: student.name,
       email: student.email,
+      enrolledCourses: student.enrolledCourses,
     });
   } else {
     return res.status(401).json({
