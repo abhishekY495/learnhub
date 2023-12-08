@@ -11,6 +11,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { CourseDetailsPage } from "./pages/CourseDetailsPage";
 import { CourseContext } from "./contexts/CourseContext";
 import { StudentContext } from "./contexts/StudentContext";
+import { EnrolledCourseDetailsPage } from "./pages/EnrolledCourseDetailsPage";
 
 export const App = () => {
   const { dispatch } = useContext(CourseContext);
@@ -59,6 +60,14 @@ export const App = () => {
           }
         />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
+        <Route
+          path="/enrolled-course/:id"
+          element={
+            <ProtectedRoute>
+              <EnrolledCourseDetailsPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

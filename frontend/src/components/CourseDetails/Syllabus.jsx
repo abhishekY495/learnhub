@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Topics } from "./Topics";
 
-export const Syllabus = ({ syllabus }) => {
+export const Syllabus = ({ syllabus, enrolled }) => {
   const [selectedWeek, setSelectedWeek] = useState(null);
 
   const toggleWeek = (week) => {
@@ -30,7 +30,11 @@ export const Syllabus = ({ syllabus }) => {
                 {syllabus_?.topics?.map((topic) => {
                   return (
                     syllabus_.week === selectedWeek && (
-                      <Topics key={topic?.name} topic={topic} />
+                      <Topics
+                        key={topic?.name}
+                        topic={topic}
+                        enrolled={enrolled}
+                      />
                     )
                   );
                 })}

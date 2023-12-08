@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
+
 import { CourseContext } from "../contexts/CourseContext";
 import { CourseDetails } from "../components/CourseDetails/CourseDetails";
 
