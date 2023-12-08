@@ -9,7 +9,6 @@ const courseSchema = mongoose.Schema(
     duration: { type: String, required: true },
     requirements: { type: Array, required: true },
     syllabus: { type: Array, required: true },
-    enrolledStudents: { type: Array, required: true },
   },
   { timestamps: true }
 );

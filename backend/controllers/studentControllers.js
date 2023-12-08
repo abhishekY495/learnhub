@@ -36,6 +36,7 @@ const registerStudent = asyncHandler(async (req, res) => {
       _id: newStudent._id,
       name: newStudent.name,
       email: newStudent.email,
+      enrolledCourses: newStudent.enrolledCourses,
     });
   } else {
     res.status(500).send({
@@ -83,4 +84,93 @@ const loginStudent = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerStudent, loginStudent };
+const enrollCourse = asyncHandler(async (req, res) => {
+  try {
+    const { id, course } = req.body;
+    const student = await StudentModel.findById(id);
+
+    if (!student) {
+      return res.status(400).json({ message: "Cannot find student" });
+    }
+
+    const courseEnrolledCheck = student.enrolledCourses.some(
+      ({ courseId }) => courseId === course._id
+    );
+
+    if (courseEnrolledCheck) {
+      return res.status(400).json({ message: "Already Enrolled" });
+    }
+
+    if (student && !courseEnrolledCheck) {
+      student.enrolledCourses = [
+        ...student.enrolledCourses,
+        {
+          courseId: course._id,
+          title: course.title,
+          description: course.description,
+          thumbnail: course.thumbnail,
+          syllabus: course.syllabus,
+          isCompleted: false,
+        },
+      ];
+      const updatedStudentData = await student.save();
+      res.json({
+        _id: updatedStudentData._id,
+        name: updatedStudentData.name,
+        email: updatedStudentData.email,
+        enrolledCourses: updatedStudentData.enrolledCourses,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 500,
+      message: "Something went wrong. Try again later",
+    });
+  }
+});
+
+const unenrollCourse = asyncHandler(async (req, res) => {
+  try {
+    const { id, course } = req.body;
+    const student = await StudentModel.findById(id);
+
+    if (!student) {
+      return res.status(400).json({ message: "Cannot find student" });
+    }
+
+    const courseExistsCheck = student.enrolledCourses.some(
+      ({ courseId }) => courseId === course.courseId
+    );
+
+    if (!courseExistsCheck) {
+      return res.status(400).json({ message: "Course not found" });
+    }
+
+    if (student && courseExistsCheck) {
+      student.enrolledCourses = student.enrolledCourses.filter(
+        ({ courseId }) => courseId !== course.courseId
+      );
+      const updatedStudentData = await student.save();
+      res.json({
+        _id: updatedStudentData._id,
+        name: updatedStudentData.name,
+        email: updatedStudentData.email,
+        enrolledCourses: updatedStudentData.enrolledCourses,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 500,
+      message: "Something went wrong. Try again later",
+    });
+  }
+});
+
+module.exports = {
+  registerStudent,
+  loginStudent,
+  enrollCourse,
+  unenrollCourse,
+};

@@ -11,7 +11,7 @@ const studentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-studentSchema.pre("save", async function () {
+studentSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }

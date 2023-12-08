@@ -4,6 +4,10 @@ export const initialState = {
   studentData: localStudentData || null,
   loading: false,
   error: false,
+  enrollLoading: false,
+  enrollError: false,
+  unenrollLoading: false,
+  unenrollError: false,
 };
 
 export const studentReducer = (state, action) => {
@@ -26,6 +30,46 @@ export const studentReducer = (state, action) => {
     case "STUDENT_LOGOUT": {
       localStorage.clear();
       return { ...state, studentData: null };
+    }
+    case "STUDENT_ENROLL_COURSE_LOADING": {
+      return {
+        ...state,
+        enrollLoading: true,
+      };
+    }
+    case "STUDENT_ENROLL_COURSE_ERROR": {
+      return {
+        ...state,
+        enrollLoading: false,
+        enrollError: true,
+      };
+    }
+    case "STUDENT_ENROLL_COURSE": {
+      localStorage.setItem("studentData", JSON.stringify(action.payload));
+      return {
+        ...state,
+        studentData: action.payload,
+      };
+    }
+    case "STUDENT_ENROLL_COURSE_LOADING": {
+      return {
+        ...state,
+        unenrollLoading: true,
+      };
+    }
+    case "STUDENT_ENROLL_COURSE_ERROR": {
+      return {
+        ...state,
+        unenrollLoading: false,
+        unenrollError: true,
+      };
+    }
+    case "STUDENT_UNENROLL_COURSE": {
+      localStorage.setItem("studentData", JSON.stringify(action.payload));
+      return {
+        ...state,
+        studentData: action.payload,
+      };
     }
     default:
       return state;
