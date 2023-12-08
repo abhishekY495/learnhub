@@ -19,7 +19,7 @@ export const Navbar = () => {
           studentData
             ? "bg-green-600 hover:bg-green-600/90"
             : "bg-red-500 hover:bg-red-500/90"
-        } px-8 py-1 rounded-full text-white hover:bg-red-500/90 transition-all`}
+        } px-8 py-1 rounded-full text-white transition-all`}
       >
         Dashboard
       </Link>
