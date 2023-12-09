@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import doneIcon from "../../assets/topic/doneIcon.png";
 import undoneIcon from "../../assets/topic/undoneIcon.png";
 import { VideoModal } from "../VideoModal";
+import { StudentContext } from "../../contexts/StudentContext";
+import { toggleMarkAsDone } from "../../functions/student/toggleMarkAsDone";
 
-export const Topics = ({ topic, enrolled }) => {
+export const Topic = ({ topic, enrolled, course, week }) => {
+  const {
+    state: { studentData },
+    dispatch,
+  } = useContext(StudentContext);
   const [showModal, setShowModal] = useState(false);
 
   const showVideo = () => setShowModal(true);
+
+  const markAsDoneHandler = () =>
+    toggleMarkAsDone(dispatch, studentData, course, week, topic);
 
   return (
     <div>
@@ -26,6 +35,7 @@ export const Topics = ({ topic, enrolled }) => {
             src={topic?.markAsDone ? doneIcon : undoneIcon}
             alt="icon"
             className="w-5 hover:cursor-pointer"
+            onClick={markAsDoneHandler}
           />
           <li className="list-none hover:cursor-pointer" onClick={showVideo}>
             {topic?.name}

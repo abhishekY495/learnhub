@@ -71,6 +71,13 @@ export const studentReducer = (state, action) => {
         studentData: action.payload,
       };
     }
+    case "STUDENT_SYLLABUS_TOPIC_MARK_AS_DONE_TOGGLE": {
+      localStorage.setItem("studentData", JSON.stringify(action.payload));
+      return {
+        ...state,
+        studentData: action.payload,
+      };
+    }
     default:
       return state;
   }

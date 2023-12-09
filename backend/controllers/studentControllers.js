@@ -168,9 +168,50 @@ const unenrollCourse = asyncHandler(async (req, res) => {
   }
 });
 
+const toggleMarkAsDoneTopic = asyncHandler(async (req, res) => {
+  try {
+    const { id, course_, week, topic_ } = req.body;
+    const student = await StudentModel.findById(id);
+
+    if (!student) {
+      return res.status(400).json({ message: "Cannot find student" });
+    }
+
+    student.enrolledCourses = student.enrolledCourses.map((course) => {
+      if (course.courseId === course_.courseId) {
+        course.syllabus[week - 1].topics = course.syllabus[week - 1].topics.map(
+          (topic) => {
+            return topic.name === topic_.name
+              ? { ...topic, markAsDone: !topic.markAsDone }
+              : topic;
+          }
+        );
+      }
+      return course;
+    });
+
+    student.markModified("enrolledCourses");
+    const updatedStudentData = await student.save();
+
+    res.json({
+      _id: updatedStudentData._id,
+      name: updatedStudentData.name,
+      email: updatedStudentData.email,
+      enrolledCourses: updatedStudentData.enrolledCourses,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 500,
+      message: "Something went wrong. Try again later",
+    });
+  }
+});
+
 module.exports = {
   registerStudent,
   loginStudent,
   enrollCourse,
   unenrollCourse,
+  toggleMarkAsDoneTopic,
 };

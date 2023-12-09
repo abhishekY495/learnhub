@@ -48,7 +48,7 @@ export const EnrolledCourseDetails = ({ course }) => {
           ></div>
         </div>
       </div>
-      <Syllabus syllabus={course?.syllabus} enrolled />
+      <Syllabus syllabus={course?.syllabus} enrolled course={course} />
     </div>
   );
 };

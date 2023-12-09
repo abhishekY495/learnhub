@@ -11,12 +11,7 @@ export const VideoModal = ({ showModal, setShowModal, videoUrl }) => {
           onClick={(e) => e.stopPropagation()}
           className="w-[60%] m-auto mt-[100px]"
         >
-          <video
-            controls
-            src={videoUrl}
-            className="rounded-md"
-            onEnded={() => console.log("Done")}
-          />
+          <video controls src={videoUrl} className="rounded-md" />
         </div>
       </div>
     )
